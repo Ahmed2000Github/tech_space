@@ -1,0 +1,44 @@
+name: tech_space
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.17
+  get: ^4.6.6
+  get_it: ^8.0.3
+  intl: ^0.20.2
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/logo/
+    - assets/images/icons/
+    - assets/images/products/
+    - assets/images/brands/
+    - assets/images/shapes/
+    - assets/images/general/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Regular.ttf
+        - asset: assets/fonts/SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Light.ttf
+          weight: 300
