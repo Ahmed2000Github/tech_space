@@ -18,7 +18,7 @@ import 'package:tech_space/features/Landing/views/widgets/cart.dart';
 import 'package:tech_space/features/Landing/views/widgets/custom_icon_button.dart';
 import 'package:tech_space/features/Landing/views/widgets/footer.dart';
 import 'package:tech_space/features/Landing/views/widgets/hearder.dart';
-import 'package:tech_space/features/Landing/views/widgets/link_button.dart';
+import 'package:tech_space/core/widgets/link_button.dart';
 import 'package:tech_space/features/Landing/views/widgets/app-button.dart';
 import 'package:tech_space/features/Landing/views/widgets/products-menu.dart';
 import 'package:tech_space/features/Landing/views/widgets/rounded_shape_painter.dart';
