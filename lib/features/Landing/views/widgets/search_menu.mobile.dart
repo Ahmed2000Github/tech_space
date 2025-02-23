@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:tech_space/configurations/app-colors.dart';
 import 'package:tech_space/configurations/app-container-radius.dart';
 import 'package:tech_space/configurations/app-icons-size.dart';
@@ -9,9 +9,10 @@ import 'package:tech_space/configurations/app-paddings.dart';
 import 'package:tech_space/configurations/app-spacing.dart';
 import 'package:tech_space/configurations/app-text-styles.dart';
 import 'package:tech_space/core/widgets/link.dart';
+import 'package:tech_space/features/Landing/views/widgets/search_menu.dart';
 
-class SearchMenu extends StatelessWidget {
-  const SearchMenu({Key? key}) : super(key: key);
+class SearchMenuMobile extends StatelessWidget {
+  const SearchMenuMobile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,7 @@ class SearchMenu extends StatelessWidget {
               children: [
                 SizedBox(
                     width: 520,
-                    child:
-                     TextFormField(
+                    child: TextFormField(
                       decoration: InputDecoration(
                         hintText: "What can we help you to find ?",
                         hintStyle: theme.textTheme.bodySmall!
@@ -83,8 +83,7 @@ class SearchMenu extends StatelessWidget {
                         child: Row(
                           children: [
                             Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildResultItem(context, "X", "Case"),
@@ -100,8 +99,7 @@ class SearchMenu extends StatelessWidget {
                             ),
                             SizedBox(width: 55),
                             Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildResultItem(context, "13", "Case"),
@@ -113,9 +111,7 @@ class SearchMenu extends StatelessWidget {
                                 buildResultItem(context, "14 Pro", "Case"),
                                 buildResultItem(context, "14 Promax", "Case"),
                                 Link(
-                                  onPressed: () {
-                                    
-                                  },
+                                  onPressed: () {},
                                   text: "Tap for more",
                                   style: AppTextStyles.buttonLG,
                                 )
@@ -150,8 +146,8 @@ class SearchMenu extends StatelessWidget {
                                 Center(
                                     child: Text(
                                   item.title,
-                                  style: AppTextStyles.captionMD.copyWith(
-                                      fontWeight: FontWeight.normal),
+                                  style: AppTextStyles.captionMD
+                                      .copyWith(fontWeight: FontWeight.normal),
                                 )),
                               ],
                             ),
@@ -283,33 +279,4 @@ class SearchMenu extends StatelessWidget {
       ],
     );
   }
-}
-
-class SearchShowItem {
-  String title;
-  String imageUrl;
-  SearchShowItem({
-    required this.title,
-    required this.imageUrl,
-  });
-  static List<SearchShowItem> samples = [
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-32.png"),
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-33.png"),
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-34.png"),
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-35.png"),
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-36.png"),
-    SearchShowItem(
-        title: "Cases & Protection",
-        imageUrl: "assets/images/products/product-37.png"),
-  ];
 }

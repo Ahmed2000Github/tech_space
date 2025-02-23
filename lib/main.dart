@@ -7,7 +7,7 @@ import 'package:tech_space/routes/app_routes.dart';
 
 void main() {
   runApp(  ProviderScope(child: const MainApp()));
-}
+} 
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

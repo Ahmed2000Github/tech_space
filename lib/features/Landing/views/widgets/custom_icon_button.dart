@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tech_space/configurations/app-colors.dart';
 import 'package:tech_space/configurations/app-paddings.dart';
@@ -15,6 +17,7 @@ class CustomIconButton extends StatelessWidget {
       height: 40,
       width: 40,
       child: FloatingActionButton(
+        heroTag: Random().nextInt(100),
         onPressed: onPress,
         elevation: 1,
         backgroundColor: AppColors.primary50,

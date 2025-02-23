@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tech_space/configurations/app-colors.dart';
+import 'package:tech_space/configurations/app-container-radius.dart';
 import 'package:tech_space/configurations/app-icons-size.dart';
 import 'package:tech_space/configurations/app-paddings.dart';
 import 'package:tech_space/configurations/app-utils.dart';
@@ -9,18 +10,21 @@ import 'package:tech_space/features/Landing/providers/account_menu_notifier.dart
 import 'package:tech_space/features/Landing/providers/cart_notifier.dart';
 import 'package:tech_space/features/Landing/providers/nav-bar-item-hover-provider.dart';
 import 'package:tech_space/features/Landing/providers/products_menu_provider.dart';
+import 'package:tech_space/features/Landing/views/widgets/authentication.dart';
+import 'package:tech_space/features/Landing/views/widgets/search_menu.dart';
 
-class Hearder extends ConsumerStatefulWidget implements PreferredSizeWidget {
-  Hearder({Key? key}) : super(key: key);
+class HearderDesktop extends ConsumerStatefulWidget
+    implements PreferredSizeWidget {
+  HearderDesktop({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<Hearder> createState() => _HearderState();
+  ConsumerState<HearderDesktop> createState() => _HearderState();
 
   @override
   Size get preferredSize => const Size.fromHeight(80.0);
 }
 
-class _HearderState extends ConsumerState<Hearder> {
+class _HearderState extends ConsumerState<HearderDesktop> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -30,7 +34,7 @@ class _HearderState extends ConsumerState<Hearder> {
           color: AppColors.white,
           border:
               Border(bottom: BorderSide(color: theme.primaryColor, width: 1))),
-      padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p108),
+      padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p48),
       child: Row(
         children: [
           Image.asset(
@@ -54,7 +58,27 @@ class _HearderState extends ConsumerState<Hearder> {
           generatMenuItem(5, "Contact Us", () {}),
           const Spacer(),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                // showAuthResultDialog(context,
+                //   AuthResult(
+                //     title: 'Oops.',
+                //     description:
+                //         'Congratulations, your account has been successfully created.',
+                //     color: AppColors.error,
+                //     icon: 'oops',
+                //   ),
+                // );
+                // showAuthResultDialog(context,
+                //  AuthResult(
+                //   title: 'Well done',
+                //   description: 'Congratulations, your account has been successfully created.',
+                //   color: AppColors.success,
+                //   icon: 'tick',
+                // ),
+                // );
+
+                showAuthResultDialog(context, SearchMenu());
+              },
               icon: SvgPicture.asset(
                 'assets/images/icons/search.svg',
                 width: AppIconsSize.large,
@@ -63,9 +87,8 @@ class _HearderState extends ConsumerState<Hearder> {
           IconButton(
               onPressed: () {
                 ref.read(cartNotifierProvider.notifier).toggle();
-                 ref.read(accountMenuNotifierProvider.notifier).close();
+                ref.read(accountMenuNotifierProvider.notifier).close();
               },
-
               icon: Stack(
                 children: [
                   SvgPicture.asset(
@@ -74,18 +97,22 @@ class _HearderState extends ConsumerState<Hearder> {
                     height: AppIconsSize.large,
                   ),
                   Positioned(
-                    bottom: 0,
-                    right: 0,
+                      bottom: 0,
+                      right: 0,
                       child: Container(
-                    height: AppIconsSize.s20,
-                    width: AppIconsSize.s20,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(color: AppColors.primary,borderRadius:BorderRadius.circular(AppIconsSize.s20,)),
-                    child: Text("3",
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                          color: Colors.white,
-                        )),
-                  ))
+                        height: AppIconsSize.s20,
+                        width: AppIconsSize.s20,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(
+                              AppIconsSize.s20,
+                            )),
+                        child: Text("3",
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                            )),
+                      ))
                 ],
               )),
           IconButton(
@@ -93,13 +120,31 @@ class _HearderState extends ConsumerState<Hearder> {
                 ref.read(accountMenuNotifierProvider.notifier).toggle();
                 ref.read(cartNotifierProvider.notifier).close();
               },
-              icon: SvgPicture.asset(
-                'assets/images/icons/profile.svg',
-                width: AppIconsSize.large,
-                height: AppIconsSize.large,
+              icon: GestureDetector(
+                onDoubleTap: () {
+                  showAuthResultDialog(context, Authentication());
+                },
+                child: SvgPicture.asset(
+                  'assets/images/icons/profile.svg',
+                  width: AppIconsSize.large,
+                  height: AppIconsSize.large,
+                ),
               )),
         ],
       ),
+    );
+  }
+
+  void showAuthResultDialog(BuildContext context, Widget widget) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppContainerRadius.radius8),
+            ),
+            child: widget);
+      },
     );
   }
 

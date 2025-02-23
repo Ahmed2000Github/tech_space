@@ -4,8 +4,8 @@ import 'package:tech_space/configurations/app-colors.dart';
 import 'package:tech_space/configurations/app-paddings.dart';
 import 'package:tech_space/features/Landing/views/widgets/custom_icon_button.dart';
 
-class Footer extends StatelessWidget {
-  const Footer({Key? key}) : super(key: key);
+class FooterDesktop extends StatelessWidget {
+  const FooterDesktop({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class Footer extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                bottom: 0,
+                  bottom: 0,
                   child: Image.asset("assets/images/shapes/shape-4.png")),
               Column(
                 children: [
@@ -239,10 +239,8 @@ class Footer extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     "assets/images/icons/message-question.svg"),
                               ),
-                              
                             ],
                           )
-             
                         ],
                       ),
                     ),

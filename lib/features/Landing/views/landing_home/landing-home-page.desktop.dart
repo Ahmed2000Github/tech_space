@@ -13,16 +13,15 @@ import 'package:tech_space/features/Landing/models/product_on_sale.dart';
 import 'package:tech_space/features/Landing/providers/account_menu_notifier.dart';
 import 'package:tech_space/features/Landing/providers/cart_notifier.dart';
 import 'package:tech_space/features/Landing/providers/products_menu_provider.dart';
+import 'package:tech_space/core/widgets/link_button.dart';
 import 'package:tech_space/features/Landing/views/widgets/account-menu.dart';
+import 'package:tech_space/features/Landing/views/widgets/app-button.dart';
 import 'package:tech_space/features/Landing/views/widgets/cart.dart';
 import 'package:tech_space/features/Landing/views/widgets/custom_icon_button.dart';
-import 'package:tech_space/features/Landing/views/widgets/footer.dart';
-import 'package:tech_space/features/Landing/views/widgets/hearder.dart';
-import 'package:tech_space/core/widgets/link_button.dart';
-import 'package:tech_space/features/Landing/views/widgets/app-button.dart';
+import 'package:tech_space/features/Landing/views/widgets/footer.desktop.dart';
+import 'package:tech_space/features/Landing/views/widgets/hearder.desktop.dart';
 import 'package:tech_space/features/Landing/views/widgets/products-menu.dart';
 import 'package:tech_space/features/Landing/views/widgets/rounded_shape_painter.dart';
-import 'package:tech_space/features/Landing/views/widgets/search_menu.dart';
 
 class LandingHomePageDesktop extends ConsumerWidget {
   LandingHomePageDesktop({Key? key}) : super(key: key);
@@ -30,12 +29,12 @@ class LandingHomePageDesktop extends ConsumerWidget {
   bool _isProductsMenuOpen = false;
 
   @override
-  Widget build(BuildContext context,WidgetRef ref ) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     _isProductsMenuOpen = ref.watch(productsMenuNotifierProvider);
     return Scaffold(
-        appBar: Hearder(),
+        appBar: HearderDesktop(),
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -82,7 +81,7 @@ class LandingHomePageDesktop extends ConsumerWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: AppPaddings.p108,
                                           vertical: AppPaddings.p20),
-                                      text: "Tech Heim",
+                                      text: "Explore More",
                                     )
                                   ],
                                 ),
@@ -1448,7 +1447,7 @@ class LandingHomePageDesktop extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  Footer()
+                  FooterDesktop()
                 ],
               ),
             ),
@@ -1460,10 +1459,9 @@ class LandingHomePageDesktop extends ConsumerWidget {
                   icon: SvgPicture.asset(
                       "assets/images/icons/arrow-circle-up.svg"),
                 )),
-            if(_isProductsMenuOpen)ProductsMenu(),
-            if( ref.watch(accountMenuNotifierProvider))AccountMenu(),
-            if( ref.watch(cartNotifierProvider))Cart(),
-            SearchMenu()
+            if (_isProductsMenuOpen) ProductsMenu(),
+            if (ref.watch(accountMenuNotifierProvider)) AccountMenu(),
+            if (ref.watch(cartNotifierProvider)) Cart(),
           ],
         ));
   }

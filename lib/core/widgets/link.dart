@@ -7,13 +7,15 @@ class Link extends StatefulWidget {
   Color? color;
   final String text;
   TextStyle? style;
+  void Function() onPressed;
 
   Link({
-    super.key,
+    Key? key,
     this.color,
     required this.text,
     this.style,
-  });
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   State<Link> createState() => _LinkState();
@@ -23,12 +25,15 @@ class _LinkState extends State<Link> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Text(
-          widget.text,
-          style: (widget.style ?? theme.textTheme.headlineLarge)!
-              .copyWith(color: widget.color ?? theme.primaryColor),
-        ));
+    return GestureDetector(
+      onTap: widget.onPressed,
+      child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Text(
+            widget.text,
+            style: (widget.style ?? theme.textTheme.headlineLarge)!
+                .copyWith(color: widget.color ?? theme.primaryColor),
+          )),
+    );
   }
 }
