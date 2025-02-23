@@ -23,13 +23,38 @@ import 'package:tech_space/features/Landing/views/widgets/hearder.desktop.dart';
 import 'package:tech_space/features/Landing/views/widgets/products-menu.dart';
 import 'package:tech_space/features/Landing/views/widgets/rounded_shape_painter.dart';
 
-class LandingHomePageDesktop extends ConsumerWidget {
-  LandingHomePageDesktop({Key? key}) : super(key: key);
+class LandingHomePageDesktop extends ConsumerStatefulWidget {
+  @override
+  _LandingHomePageDesktopState createState() => _LandingHomePageDesktopState();
+}
+
+class _LandingHomePageDesktopState extends ConsumerState<LandingHomePageDesktop> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isHovered = false;
   bool _isProductsMenuOpen = false;
 
+
+
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+ 
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     _isProductsMenuOpen = ref.watch(productsMenuNotifierProvider);
@@ -38,6 +63,7 @@ class LandingHomePageDesktop extends ConsumerWidget {
         body: Stack(
           children: [
             SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 children: [
                   Padding(
@@ -1455,7 +1481,7 @@ class LandingHomePageDesktop extends ConsumerWidget {
                 bottom: 100,
                 right: AppPaddings.p108,
                 child: CustomIconButton(
-                  onPress: () {},
+                  onPress: _scrollToTop,
                   icon: SvgPicture.asset(
                       "assets/images/icons/arrow-circle-up.svg"),
                 )),

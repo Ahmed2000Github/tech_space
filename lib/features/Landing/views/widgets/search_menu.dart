@@ -55,7 +55,9 @@ class SearchMenu extends StatelessWidget {
                     )),
                 Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   icon: SvgPicture.asset(
                     "assets/images/icons/close-circle.svg",
                     width: AppIconsSize.s24,

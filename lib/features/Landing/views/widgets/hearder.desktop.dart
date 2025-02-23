@@ -76,7 +76,8 @@ class _HearderState extends ConsumerState<HearderDesktop> {
                 //   icon: 'tick',
                 // ),
                 // );
-
+                 ref.read(cartNotifierProvider.notifier).close();
+                 ref.read(accountMenuNotifierProvider.notifier).close();
                 showAuthResultDialog(context, SearchMenu());
               },
               icon: SvgPicture.asset(
