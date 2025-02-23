@@ -10,6 +10,7 @@ import 'package:tech_space/configurations/app-spacing.dart';
 import 'package:tech_space/configurations/app-text-styles-mobile.dart';
 import 'package:tech_space/features/Landing/providers/account_menu_notifier.dart';
 import 'package:tech_space/features/Landing/providers/cart_notifier.dart';
+import 'package:tech_space/features/Landing/providers/search_notifier.dart';
 import 'package:tech_space/features/Landing/views/widgets/authentication.dart';
 import 'package:tech_space/routes/app_routes.dart';
 
@@ -187,36 +188,7 @@ class _HearderState extends ConsumerState<HearderMobile> {
                           ],
                         )),
                   ),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "What can we help you to find ?",
-                        fillColor: AppColors.grayED,
-                        filled: true,
-                        hintStyle: theme.textTheme.bodySmall!
-                            .copyWith(color: AppColors.gray44),
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppContainerRadius.radius8),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppContainerRadius.radius8),
-                          borderSide: BorderSide.none,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "assets/images/icons/search-normal.svg",
-                            color: AppColors.gray71,
-                            width: AppIconsSize.s24,
-                            height: AppIconsSize.s24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  Expanded(child: TextFormFieldWithFocusEvent()),
                 ],
               )),
         ],
@@ -234,6 +206,71 @@ class _HearderState extends ConsumerState<HearderMobile> {
             ),
             child: widget);
       },
+    );
+  }
+}
+
+class TextFormFieldWithFocusEvent extends ConsumerStatefulWidget {
+  @override
+  _TextFormFieldWithFocusEventState createState() =>
+      _TextFormFieldWithFocusEventState();
+}
+
+class _TextFormFieldWithFocusEventState
+    extends ConsumerState<TextFormFieldWithFocusEvent> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      // ref.read(searchNotifierProvider.notifier).toggle();
+    } else {
+      // ref.read(searchNotifierProvider.notifier).toggle();
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TextFormField(
+      focusNode: _focusNode,
+      decoration: InputDecoration(
+        hintText: "What can we help you to find ?",
+        fillColor: AppColors.grayED,
+        filled: true,
+        hintStyle: theme.textTheme.bodySmall!.copyWith(color: AppColors.gray44),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppContainerRadius.radius8),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppContainerRadius.radius8),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          onPressed: () {
+            ref.read(searchNotifierProvider.notifier).toggle();
+          },
+          icon: SvgPicture.asset(
+            "assets/images/icons/${ref.watch(searchNotifierProvider) ? "close-circle" : "search-normal"}.svg",
+            color: AppColors.gray71,
+            width: AppIconsSize.s24,
+            height: AppIconsSize.s24,
+          ),
+        ),
+      ),
     );
   }
 }

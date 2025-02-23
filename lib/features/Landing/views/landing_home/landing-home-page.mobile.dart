@@ -16,35 +16,84 @@ import 'package:tech_space/features/Landing/providers/account_menu_notifier.dart
 import 'package:tech_space/features/Landing/providers/cart_notifier.dart';
 import 'package:tech_space/features/Landing/providers/products_menu_provider.dart';
 import 'package:tech_space/core/widgets/link_button.dart';
+import 'package:tech_space/features/Landing/providers/search_notifier.dart';
 import 'package:tech_space/features/Landing/views/widgets/account-menu.dart';
 import 'package:tech_space/features/Landing/views/widgets/app-button.dart';
 import 'package:tech_space/features/Landing/views/widgets/app-drawer.dart';
-import 'package:tech_space/features/Landing/views/widgets/cart.dart';
 import 'package:tech_space/features/Landing/views/widgets/cart.mobile.dart';
 import 'package:tech_space/features/Landing/views/widgets/custom_icon_button.dart';
-import 'package:tech_space/features/Landing/views/widgets/footer.desktop.dart';
 import 'package:tech_space/features/Landing/views/widgets/footer.mobile.dart';
 import 'package:tech_space/features/Landing/views/widgets/hearder.mobile.dart';
 import 'package:tech_space/features/Landing/views/widgets/products-menu.dart';
 import 'package:tech_space/features/Landing/views/widgets/rounded_shape_painter.dart';
+import 'package:tech_space/features/Landing/views/widgets/search_menu.mobile.dart';
 
-class LandingHomePageMobile extends ConsumerWidget {
+class LandingHomePageMobile extends ConsumerStatefulWidget {
+  @override
+  _LandingHomePageMobileState createState() => _LandingHomePageMobileState();
+}
 
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  LandingHomePageMobile({Key? key}) : super(key: key);
+class _LandingHomePageMobileState extends ConsumerState<LandingHomePageMobile> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isHovered = false;
   bool _isProductsMenuOpen = false;
-  
+  double _buttonPosition = 20;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_updateButtonPosition);
+  }
 
+ void _updateButtonPosition() {
+    double maxScroll = _scrollController.position.maxScrollExtent;
+    double currentScroll = _scrollController.position.pixels;
+
+    if (currentScroll >= maxScroll - 320) {
+      setState(() {
+        _buttonPosition = 320;
+      });
+    } else {
+      setState(() {
+        _buttonPosition = 20;
+      });
+    }
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    _scrollController.removeListener(_updateButtonPosition);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
+
     _isProductsMenuOpen = ref.watch(productsMenuNotifierProvider);
     return Scaffold(
-          key: _scaffoldKey,
-        appBar:  HearderMobile(scaffoldKey: _scaffoldKey,),
+        key: _scaffoldKey,
+        appBar: HearderMobile(
+          scaffoldKey: _scaffoldKey,
+        ),
         drawer: Drawer(
           shape: BeveledRectangleBorder(),
           child: AppDrawer(),
@@ -52,6 +101,7 @@ class LandingHomePageMobile extends ConsumerWidget {
         body: Stack(
           children: [
             SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 children: [
                   Padding(
@@ -752,8 +802,7 @@ class LandingHomePageMobile extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
                                   "Best Sellers",
@@ -777,8 +826,7 @@ class LandingHomePageMobile extends ConsumerWidget {
                                           child: StatefulBuilder(builder:
                                               (context, setInnerState) {
                                             return MouseRegion(
-                                              cursor:
-                                                  SystemMouseCursors.click,
+                                              cursor: SystemMouseCursors.click,
                                               onEnter: (_) {
                                                 setInnerState(() {
                                                   _isHovered = true;
@@ -801,15 +849,13 @@ class LandingHomePageMobile extends ConsumerWidget {
                                                         const EdgeInsets.all(
                                                             AppPaddings.p8),
                                                     decoration: BoxDecoration(
-                                                        color:
-                                                            AppColors.white,
+                                                        color: AppColors.white,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8),
                                                         boxShadow: [
                                                           BoxShadow(
-                                                            color: Colors
-                                                                .black
+                                                            color: Colors.black
                                                                 .withOpacity(
                                                                     0.1),
                                                             spreadRadius: 1,
@@ -888,8 +934,9 @@ class LandingHomePageMobile extends ConsumerWidget {
                                                                 SvgPicture
                                                                     .asset(
                                                                   'assets/images/icons/star.svg',
-                                                                  width: AppIconsSize
-                                                                      .small,
+                                                                  width:
+                                                                      AppIconsSize
+                                                                          .small,
                                                                   height:
                                                                       AppIconsSize
                                                                           .small,
@@ -897,8 +944,7 @@ class LandingHomePageMobile extends ConsumerWidget {
                                                                 const SizedBox(
                                                                     width: 4),
                                                                 Text(
-                                                                  product
-                                                                      .rating
+                                                                  product.rating
                                                                       .toString(),
                                                                   style: AppTextStylesMobile
                                                                       .h4
@@ -920,24 +966,27 @@ class LandingHomePageMobile extends ConsumerWidget {
                                                         left: 0,
                                                         top: 20,
                                                         child: Container(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal:
-                                                                  AppPaddings
-                                                                      .p4,
-                                                              vertical:
-                                                                  AppPaddings
-                                                                      .p8),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      AppPaddings
+                                                                          .p4,
+                                                                  vertical:
+                                                                      AppPaddings
+                                                                          .p8),
                                                           decoration: const BoxDecoration(
                                                               color: AppColors
                                                                   .secondary100,
                                                               borderRadius: BorderRadius.only(
-                                                                  topRight: Radius.circular(
-                                                                      AppContainerRadius
-                                                                          .radius8),
-                                                                  bottomRight:
-                                                                      Radius.circular(
-                                                                          AppContainerRadius.radius8))),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          AppContainerRadius
+                                                                              .radius8),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          AppContainerRadius
+                                                                              .radius8))),
                                                           child: Text(
                                                             '-${product.reduction}%',
                                                             style: theme
@@ -954,10 +1003,10 @@ class LandingHomePageMobile extends ConsumerWidget {
                                                       onPressed: () {},
                                                       icon: SvgPicture.asset(
                                                         'assets/images/icons/heart.svg',
-                                                        width: AppIconsSize
-                                                            .small,
-                                                        height: AppIconsSize
-                                                            .small,
+                                                        width:
+                                                            AppIconsSize.small,
+                                                        height:
+                                                            AppIconsSize.small,
                                                       ),
                                                     ))
                                                 ],
@@ -1116,7 +1165,6 @@ class LandingHomePageMobile extends ConsumerWidget {
                                 color: AppColors.grayB4,
                               ),
                               const SizedBox(height: AppPaddings.p4),
-
                               Container(
                                 margin: const EdgeInsets.only(top: 10),
                                 decoration: BoxDecoration(
@@ -1413,16 +1461,17 @@ class LandingHomePageMobile extends ConsumerWidget {
               ),
             ),
             Positioned(
-                bottom: 320,
+                bottom: _buttonPosition,
                 right: AppPaddings.p24,
                 child: CustomIconButton(
-                  onPress: () {},
+                  onPress: _scrollToTop,
                   icon: SvgPicture.asset(
                       "assets/images/icons/arrow-circle-up.svg"),
                 )),
-                 if (_isProductsMenuOpen) ProductsMenu(),
+            if (_isProductsMenuOpen) ProductsMenu(),
             if (ref.watch(accountMenuNotifierProvider)) AccountMenu(),
             if (ref.watch(cartNotifierProvider)) CartMobile(),
+            if (ref.watch(searchNotifierProvider)) SearchMenuMobile(),
           ],
         ));
   }

@@ -1,282 +1,291 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tech_space/configurations/app-colors.dart';
 import 'package:tech_space/configurations/app-container-radius.dart';
 import 'package:tech_space/configurations/app-icons-size.dart';
 import 'package:tech_space/configurations/app-paddings.dart';
 import 'package:tech_space/configurations/app-spacing.dart';
-import 'package:tech_space/configurations/app-text-styles.dart';
+import 'package:tech_space/configurations/app-text-styles-mobile.dart';
 import 'package:tech_space/core/widgets/link.dart';
+import 'package:tech_space/features/Landing/providers/search_notifier.dart';
 import 'package:tech_space/features/Landing/views/widgets/search_menu.dart';
 
-class SearchMenuMobile extends StatelessWidget {
-  const SearchMenuMobile({Key? key}) : super(key: key);
+class SearchMenuMobile extends ConsumerStatefulWidget {
+  SearchMenuMobile({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<SearchMenuMobile> createState() => _SearchMenuMobileState();
+}
+
+class _SearchMenuMobileState extends ConsumerState<SearchMenuMobile>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _topPositionAnimation;
+  bool _isActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _topPositionAnimation = Tween<double>(begin: -50, end: 0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    return Container(
-        width: 800,
-        height: 500,
-        padding: EdgeInsets.symmetric(
-            horizontal: AppPaddings.p48, vertical: AppPaddings.p32),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(AppContainerRadius.radius4),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                    width: 520,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "What can we help you to find ?",
-                        hintStyle: theme.textTheme.bodySmall!
-                            .copyWith(color: AppColors.gray44),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.black,
-                            ),
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(AppContainerRadius.radius8))),
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "assets/images/icons/search-normal.svg",
-                            width: AppIconsSize.s24,
-                            height: AppIconsSize.s24,
-                          ),
-                        ),
-                      ),
-                    )),
-                Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: SvgPicture.asset(
-                    "assets/images/icons/close-circle.svg",
-                    width: AppIconsSize.s24,
-                    height: AppIconsSize.s24,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: AppSpacing.s16),
-            Expanded(
+    return Stack(
+      children: [
+        AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Positioned(
+                top: _topPositionAnimation.value,
+                child: Container(
+                    height: height - 100,
+                    width: width,
+                    padding: EdgeInsets.only(top: AppPaddings.p24),
+                    color: Colors.white,
+                    child: getSearchedItems(context)),
+              );
+            }),
+      ],
+    );
+  }
+
+  getRecent(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppPaddings.p24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "The Most Searched Items",
+                style: AppTextStylesMobile.caption,
+              ),
+              SizedBox(height: AppSpacing.s16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppPaddings.p12),
                 child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: AppPaddings.p20),
-                  child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("MacBook Pro", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("AirPods Pro", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Samsung S9", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Tablet", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Xiaomi", style: AppTextStylesMobile.bodySM),
+                      ],
+                    ),
+                    SizedBox(width: AppSpacing.s32),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("JBL speaker", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Canon", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("AirPods Max", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Asus", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("MagSafe", style: AppTextStylesMobile.bodySM),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: AppSpacing.s24),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Most used keywords",
+                style: AppTextStylesMobile.caption,
+              ),
+              SizedBox(height: AppSpacing.s16),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppPaddings.p12),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Tablets", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Headphones", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Smartphones", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Smartwatch", style: AppTextStylesMobile.bodySM),
+                      ],
+                    ),
+                    SizedBox(width: AppSpacing.s32),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Laptops", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("USB Drive", style: AppTextStylesMobile.bodySM),
+                        SizedBox(height: AppPaddings.p12),
+                        Text("Phone Cases", style: AppTextStylesMobile.bodySM),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  getSearchedItems(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppPaddings.p24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: AppSpacing.s32),
+              Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "view 17 out of 30 results",
-                        style: theme.textTheme.bodyMedium!
-                            .copyWith(color: AppColors.gray50),
-                      ),
-                      SizedBox(height: AppSpacing.s48),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                buildResultItem(context, "X", "Case"),
-                                buildResultItem(context, "11", "Case"),
-                                buildResultItem(context, "11 Pro", "Case"),
-                                buildResultItem(context, "11 Promax", "Case"),
-                                buildResultItem(context, "12", "Case"),
-                                buildResultItem(context, "12 mini", "Case"),
-                                buildResultItem(context, "12 Pro", "Case"),
-                                buildResultItem(context, "12 Promax", "Case"),
-                                buildResultItem(context, "13 mini", "Case"),
-                              ],
-                            ),
-                            SizedBox(width: 55),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                buildResultItem(context, "13", "Case"),
-                                buildResultItem(context, "13 Pro", "Case"),
-                                buildResultItem(context, "13 Promax", "Case"),
-                                buildResultItem(context, "SE", "Case"),
-                                buildResultItem(context, "14", "Case"),
-                                buildResultItem(context, "14 Plus", "Case"),
-                                buildResultItem(context, "14 Pro", "Case"),
-                                buildResultItem(context, "14 Promax", "Case"),
-                                Link(
-                                  onPressed: () {},
-                                  text: "Tap for more",
-                                  style: AppTextStyles.buttonLG,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                      buildResultItem(context, "X", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "11", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "11 Pro", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "11 Promax", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "12", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "12 mini", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "12 Pro", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "12 Promax", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "13 mini", "Case"),
                     ],
                   ),
-                ),
-                SizedBox(width: 27),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: AppPaddings.p16),
-                    child: GridView.count(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: AppSpacing.s12,
-                      crossAxisSpacing: AppSpacing.s12,
-                      childAspectRatio: 11.5 / 16,
-                      children: SearchShowItem.samples.map((item) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                AppContainerRadius.radius4),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(AppPaddings.p8),
-                            child: Column(
-                              children: [
-                                Image.asset(item.imageUrl),
-                                Center(
-                                    child: Text(
-                                  item.title,
-                                  style: AppTextStyles.captionMD
-                                      .copyWith(fontWeight: FontWeight.normal),
-                                )),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                  SizedBox(width: 55),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildResultItem(context, "13", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "13 Pro", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "13 Promax", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "SE", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "14", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "14 Plus", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "14 Pro", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      buildResultItem(context, "14 Promax", "Case"),
+                      SizedBox(height: AppSpacing.s20),
+                      Link(
+                        onPressed: () {},
+                        text: "Tap for more",
+                        style: AppTextStylesMobile.buttonLG,
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+        SizedBox(width: 27),
+        SizedBox(
+          height: 150,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: AppPaddings.p16, horizontal: AppPaddings.p24),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: SearchShowItem.samples.map((item) {
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(AppContainerRadius.radius4),
                     ),
-                  ),
-                )
-              ],
-            ))
-          ],
-        ));
+                    child: Padding(
+                      padding: EdgeInsets.all(AppPaddings.p8),
+                      child: Column(
+                        children: [
+                          Flexible(child: Image.asset(item.imageUrl)),
+                          Center(
+                              child: Text(
+                            item.title,
+                            style: AppTextStylesMobile.caption
+                                .copyWith(fontWeight: FontWeight.normal),
+                          )),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+            )
+          ),
+        )
+      ],
+    );
   }
 
   buildResultItem(BuildContext context, String text1, String text2) {
     final theme = Theme.of(context);
     var isHover = false;
     return StatefulBuilder(builder: (context, setInnerState) {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (event) => setInnerState(
-          () => isHover = true,
-        ),
-        onExit: (event) => setInnerState(
-          () => isHover = false,
-        ),
-        child: RichText(
-            text: TextSpan(
-                text: text1,
-                style: theme.textTheme.bodyLarge!.copyWith(
-                    color: isHover ? theme.primaryColor : AppColors.black),
-                children: [
-              TextSpan(
-                  text: text2,
-                  style: theme.textTheme.bodyLarge!.copyWith(
-                      color: isHover ? theme.primaryColor : AppColors.gray71))
-            ])),
-      );
+      return RichText(
+          text: TextSpan(
+              text: text1,
+              style:
+                  AppTextStylesMobile.buttonLG.copyWith(color: AppColors.black),
+              children: [
+            TextSpan(
+                text: text2,
+                style: AppTextStylesMobile.buttonLG
+                    .copyWith(color: AppColors.gray71))
+          ]));
     });
-  }
-
-  getRecent(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "The Most Searched Items",
-              style: theme.textTheme.titleMedium,
-            ),
-            SizedBox(height: AppSpacing.s40),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("MacBook Pro", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("AirPods Pro", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Samsung S9", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Tablet", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Xiaomi", style: theme.textTheme.bodyLarge),
-                  ],
-                ),
-                SizedBox(width: AppSpacing.s32),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("JBL speaker", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Canon", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("AirPods Max", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Asus", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("MagSafe", style: theme.textTheme.bodyLarge),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        SizedBox(width: AppSpacing.s40),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Most used keywords",
-              style: theme.textTheme.titleMedium,
-            ),
-            SizedBox(height: AppSpacing.s40),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Tablets", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Headphones", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Smartphones", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Smartwatch", style: theme.textTheme.bodyLarge),
-                  ],
-                ),
-                SizedBox(width: AppSpacing.s32),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Laptops", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("USB Drive", style: theme.textTheme.bodyLarge),
-                    SizedBox(height: AppPaddings.p32),
-                    Text("Phone Cases", style: theme.textTheme.bodyLarge),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      ],
-    );
   }
 }

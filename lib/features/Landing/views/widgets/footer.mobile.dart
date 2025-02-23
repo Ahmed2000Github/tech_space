@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tech_space/configurations/app-colors.dart';
 import 'package:tech_space/configurations/app-paddings.dart';
+import 'package:tech_space/configurations/app-text-styles-mobile.dart';
 import 'package:tech_space/core/widgets/link.dart';
 import 'package:tech_space/features/Landing/views/widgets/custom_icon_button.dart';
 
@@ -14,7 +15,6 @@ class FooterMobile extends StatelessWidget {
     return Column(
       children: [
         Container(
-          
           color: AppColors.primary900,
           child: Stack(
             children: [
@@ -75,11 +75,13 @@ class FooterMobile extends StatelessWidget {
                                     fillColor: Colors.transparent,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(color: Colors.white),
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(color: Colors.white),
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -242,12 +244,18 @@ class FooterMobile extends StatelessWidget {
                                                 'assets/images/icons/location.svg',
                                                 color: AppColors.grayCB),
                                             const SizedBox(width: 8),
-                                            Text('123 Main Street, Anytown, USA',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AppColors.grayCB)),
+                                            Expanded(
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text(
+                                                    '123 Main Street, Anytown, USA',
+                                                    style: AppTextStylesMobile
+                                                        .bodyMD
+                                                        .copyWith(
+                                                            color:
+                                                                AppColors.grayCB)),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(height: AppPaddings.p8),
@@ -257,12 +265,17 @@ class FooterMobile extends StatelessWidget {
                                                 'assets/images/icons/call-calling.svg',
                                                 color: AppColors.grayCB),
                                             const SizedBox(width: 8),
-                                            Text('+1 (555) 123-4567',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AppColors.grayCB)),
+                                            Expanded(
+                                              child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text('+1 (555) 123-4567',
+                                                    style: AppTextStylesMobile
+                                                        .bodyMD
+                                                        .copyWith(
+                                                            color:
+                                                                AppColors.grayCB)),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(height: AppPaddings.p8),
@@ -272,12 +285,17 @@ class FooterMobile extends StatelessWidget {
                                                 'assets/images/icons/sms-edit.svg',
                                                 color: AppColors.grayCB),
                                             const SizedBox(width: 8),
-                                            Text('TechHeimSupport@gmail.com',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.copyWith(
-                                                        color: AppColors.grayCB)),
+                                           Expanded(
+                                             child: FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Text('TechHeimSupport@gmail.com',
+                                                    style: AppTextStylesMobile
+                                                        .bodyMD
+                                                        .copyWith(
+                                                            color:
+                                                                AppColors.grayCB)),
+                                              ),
+                                           ),
                                           ],
                                         ),
                                       ],
@@ -315,11 +333,10 @@ class FooterMobile extends StatelessWidget {
               Flexible(
                   flex: 1,
                   child: Image.asset("assets/images/general/visa.png")),
-              
               Flexible(
                   flex: 1,
                   child: Image.asset("assets/images/general/master-card.png")),
-                  Flexible(flex: 3, child: SizedBox(width: AppPaddings.p4)),
+              Flexible(flex: 3, child: SizedBox(width: AppPaddings.p4)),
               Flexible(
                 flex: 1,
                 child: IconButton(
